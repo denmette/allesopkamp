@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Vaadin ###
+node_modules/
+src/main/frontend/generated/
+pnpmfile.js
+vite.generated.ts
+drivers/
+error-screenshots/
+webpack.generated.js

@@ -1,0 +1,31 @@
+name: Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - trunk
+  pull_request:
+    branches:
+      - trunk
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: pipeline-${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  deploy:
+    needs:
+      - build
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      environment: prd

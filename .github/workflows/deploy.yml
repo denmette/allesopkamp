@@ -1,0 +1,39 @@
+name: Heroku deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: "deployment environment"
+        default: "tst"
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "tst"
+
+concurrency:
+  group: deploy-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Heroku Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          docker_image: ghcr.io/${{ github.repository }}/allesopkamp:${{ github.sha }}
+          process_type: web
