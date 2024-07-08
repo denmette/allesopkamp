@@ -39,7 +39,7 @@ jobs:
 
       - name: Create docker image
         if: ${{ !github.head_ref }}
-        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}/allesopkamp:${{ github.sha }}
+        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}/alles-op-kamp:${{ github.sha }}
 
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/${{ github.repository }}/my-app:${{ github.sha }}
+        run: docker push ghcr.io/${{ github.repository }}/alles-op-kamp:${{ github.sha }}

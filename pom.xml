@@ -84,11 +84,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <image>
-                        <name>ghcr.io/${project.groupId}/${project.artifactId}</name>
-                    </image>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.vaadin</groupId>
