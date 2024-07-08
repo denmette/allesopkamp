@@ -39,7 +39,7 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         env:
-          CR_PAT: ${{ secrets.CR_PAT }}
+          CR_PAT: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Create docker image
         if: ${{ !github.head_ref }}
