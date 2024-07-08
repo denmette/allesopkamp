@@ -1,10 +1,16 @@
 name: Java CI with Maven Wrapper
 
 on:
-  push:
-    branches: [ "trunk" ]
-  pull_request:
-    branches: [ "trunk" ]
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
 
 env:
   JAVA_VERSION: '22'
