@@ -14,6 +14,8 @@ permissions:
 
 env:
   JAVA_VERSION: '22'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -34,12 +36,16 @@ jobs:
       - name: Build with Maven Wrapper
         run: ./mvnw clean verify --file pom.xml --fail-at-end --update-snapshots
 
-      - name: Log in to GitHub Container Registry
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create docker image
         if: ${{ !github.head_ref }}
-        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}/alles-op-kamp:${{ github.sha }}
+        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/${{ github.repository }}/alles-op-kamp:${{ github.sha }}
+        run: docker push ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}

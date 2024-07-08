@@ -35,5 +35,5 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          docker_image: ghcr.io/${{ github.repository }}/allesopkamp:${{ github.sha }}
+          docker_image: ghcr.io/${{ github.actor }}/alles-op-kamp:${{ github.sha }}
           process_type: web
