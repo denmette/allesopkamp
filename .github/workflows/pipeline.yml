@@ -9,9 +9,9 @@ on:
     branches:
       - trunk
 
-#permissions:
-#  id-token: write
-#  contents: read
+permissions:
+  id-token: write
+  contents: read
 
 concurrency:
   group: pipeline-${{ github.workflow }}-${{ github.head_ref || github.ref }}

@@ -8,9 +8,10 @@ concurrency:
   group: build-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
-#permissions:
-#  id-token: write
-#  contents: read
+permissions:
+  id-token: write
+  contents: read
+  packages: write
 
 env:
   JAVA_VERSION: '22'

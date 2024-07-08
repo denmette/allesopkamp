@@ -19,9 +19,9 @@ concurrency:
   group: deploy-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: false
 
-#permissions:
-#  id-token: write
-#  contents: read
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build:
