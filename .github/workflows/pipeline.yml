@@ -12,6 +12,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  packages: write
 
 concurrency:
   group: pipeline-${{ github.workflow }}-${{ github.head_ref || github.ref }}
