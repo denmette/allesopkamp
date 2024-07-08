@@ -8,9 +8,9 @@ concurrency:
   group: build-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
-permissions:
-  id-token: write
-  contents: read
+#permissions:
+#  id-token: write
+#  contents: read
 
 env:
   JAVA_VERSION: '22'
@@ -37,7 +37,7 @@ jobs:
         run: ./mvnw clean verify --file pom.xml --fail-at-end --update-snapshots
 
       - name: Login to GitHub Container Registry
-        run: echo ${{ secrets.DOCKER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Create docker image
         if: ${{ !github.head_ref }}
