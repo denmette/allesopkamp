@@ -23,17 +23,20 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
     steps:
-      - name: Heroku Deploy
-        uses: akhileshns/heroku-deploy@v3.13.15
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          docker_image: ghcr.io/${{ github.actor }}/alles-op-kamp:${{ github.sha }}
-          process_type: web
+      - name: Log in to Fly.io
+        run: echo ${{ secrets.FLY_API_TOKEN }} | flyctl auth token
+
+
+      - name: Deploy to Fly.io
+        run: |
+          flyctl deploy --remote-only --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --app ${{ secrets.FLY_APP_NAME }}
