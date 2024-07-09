@@ -24,8 +24,7 @@ jobs:
     secrets: inherit
 
   deploy:
-    needs:
-      - build
+    needs: build
     uses: ./.github/workflows/deploy.yml
     secrets:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
