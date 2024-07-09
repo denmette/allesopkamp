@@ -28,13 +28,16 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  deploy:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
       - name: Setup flyctl
-        uses: superfly/flyctl-actions@1.5
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Fly.io
         run: |
