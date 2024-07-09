@@ -44,4 +44,4 @@ jobs:
           flyctl deploy --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --app ${{ env.FLY_APP_NAME }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          FLY_APP_NAME: ${{ secrets.FLY_APP_NAME }}
+          FLY_APP_NAME: 'alles-op-kamp'
