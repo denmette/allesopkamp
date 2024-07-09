@@ -33,9 +33,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions@1.5
+
       - name: Log in to Fly.io
         run: echo ${{ secrets.FLY_API_TOKEN }} | flyctl auth token
-
 
       - name: Deploy to Fly.io
         run: |
