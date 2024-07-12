@@ -2,12 +2,7 @@ name: Java CI with Maven Wrapper
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - trunk
-  pull_request:
-    branches:
-      - trunk
+  workflow_call:
 
 concurrency:
   group: build-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -40,7 +35,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven Wrapper
-        run: ./mvnw clean verify --file pom.xml --fail-at-end --update-snapshots
+        run: ./mvnw verify --file pom.xml --fail-at-end --update-snapshots
 
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin

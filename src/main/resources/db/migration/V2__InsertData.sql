@@ -1,5 +1,5 @@
 -- Insert data into the STATUS table
-INSERT INTO "STATUS" (ID, VERSION, NAME) VALUES
+INSERT INTO STATUS (ID, VERSION, NAME) VALUES
                                              (1, 1, 'Imported lead'),
                                              (2, 1, 'Not contacted'),
                                              (3, 1, 'Contacted'),
@@ -7,7 +7,7 @@ INSERT INTO "STATUS" (ID, VERSION, NAME) VALUES
                                              (5, 1, 'Closed (lost)');
 
 -- Insert data into the COMPANY table
-INSERT INTO "COMPANY" (ID, VERSION, NAME) VALUES
+INSERT INTO COMPANY (ID, VERSION, NAME) VALUES
                                               (6, 1, 'Phillips Van Heusen Corp.'),
                                               (7, 1, 'Avaya Inc.'),
                                               (8, 1, 'Laboratory Corporation of America Holdings'),
@@ -15,7 +15,7 @@ INSERT INTO "COMPANY" (ID, VERSION, NAME) VALUES
                                               (10, 1, 'Linens ''n Things Inc.');
 
 -- Insert data into the CONTACT table
-INSERT INTO "CONTACT" (ID, VERSION, EMAIL, FIRST_NAME, LAST_NAME, COMPANY_ID, STATUS_ID) VALUES
+INSERT INTO CONTACT (ID, VERSION, EMAIL, FIRST_NAME, LAST_NAME, COMPANY_ID, STATUS_ID) VALUES
                                                                                              (11, 1, 'eula.lane@jigrormo.ye', 'Eula', 'Lane', 8, 1),
                                                                                              (12, 1, 'barry.rodriquez@zun.mm', 'Barry', 'Rodriquez', 7, 5),
                                                                                              (13, 1, 'eugenia.selvi@capfad.vn', 'Eugenia', 'Selvi', 6, 3),
