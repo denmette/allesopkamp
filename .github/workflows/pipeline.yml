@@ -2,10 +2,10 @@ name: Pipeline
 
 on:
   workflow_dispatch:
-    push:
-      branches: [ trunk ]
-    pull_request:
-      branches: [ trunk ]
+  push:
+    branches: [ trunk ]
+  pull_request:
+    branches: [ trunk ]
 
 permissions:
   id-token: write
