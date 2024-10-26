@@ -14,7 +14,7 @@ permissions:
   packages: write
 
 env:
-  JAVA_VERSION: '22'
+  JAVA_VERSION: '23'
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -34,15 +34,15 @@ jobs:
           distribution: 'liberica'
           cache: 'maven'
 
-      - name: Build with Maven Wrapper
+      - name: Build with Gradle Wrapper
         run: ./mvnw verify --file pom.xml --fail-at-end --update-snapshots
 
-      - name: Login to GitHub Container Registry
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+#      - name: Login to GitHub Container Registry
+#        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-      - name: Create docker image
-        if: ${{ !github.head_ref }}
-        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+#      - name: Create docker image
+#        if: ${{ !github.head_ref }}
+#        run: ./mvnw spring-boot:build-image -Pproduction -DskipTests -Dspring-boot.build-image.imageName=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Push Docker image to GitHub Container Registry
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+#      - name: Push Docker image to GitHub Container Registry
+#        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}

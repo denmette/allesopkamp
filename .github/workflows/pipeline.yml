@@ -21,9 +21,9 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/trunk'
-    needs:
-      - build
-    uses: ./.github/workflows/deploy.yml
-    secrets: inherit
+#  deploy:
+#    if: github.event_name == 'push' && github.ref == 'refs/heads/trunk'
+#    needs:
+#      - build
+#    uses: ./.github/workflows/deploy.yml
+#    secrets: inherit

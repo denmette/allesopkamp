@@ -6,22 +6,34 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.1</version>
+        <version>3.3.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>be.denmette.allesopkamp</groupId>
     <artifactId>application</artifactId>
-    <name>Alles op Kamp :: Application</name>
     <version>0.0.1-SNAPSHOT</version>
+    <name>Alles op Kamp</name>
+    <description>Demo project for Spring Boot</description>
+
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Maarten Casteels</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
-        <java.version>22</java.version>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <vaadin.version>24.4.6</vaadin.version>
+        <java.version>23</java.version>
+        <spring-modulith.version>1.2.4</spring-modulith.version>
+        <vaadin.version>24.5.0</vaadin.version>
     </properties>
 
     <dependencyManagement>
@@ -33,32 +45,32 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.modulith</groupId>
+                <artifactId>spring-modulith-bom</artifactId>
+                <version>${spring-modulith.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <!-- Vaadin Dependencies -->
         <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring-boot-starter</artifactId>
-        </dependency>
-
-        <!-- Spring Dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -69,65 +81,113 @@
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
             <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
-
-        <!-- Spring Dev Tools -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
-
-        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-testbench-junit5</artifactId>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.groupId}.${project.artifactId}</finalName>
-        <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-                <version>${vaadin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-frontend</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>5.43.0</version>
+                <configuration>
+                    <exportDatatables>true</exportDatatables>
+                    <activeRecipes>
+                        <!-- Defaults -->
+                        <recipe>org.openrewrite.staticanalysis.CodeCleanup</recipe>
+                        <recipe>org.openrewrite.staticanalysis.CommonStaticAnalysis</recipe>
+                        <recipe>org.openrewrite.java.format.AutoFormat</recipe>
+
+                        <!-- Best practices -->
+                        <recipe>org.openrewrite.java.spring.boot3.SpringBoot3BestPractices</recipe>
+                        <recipe>org.openrewrite.java.migrate.UpgradeToJava21</recipe>
+                        <recipe>org.openrewrite.java.logging.slf4j.Slf4jBestPractices</recipe>
+                        <recipe>org.openrewrite.java.security.JavaSecurityBestPractices</recipe>
+                        <recipe>org.openrewrite.java.testing.assertj.Assertj</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-static-analysis</artifactId>
+                        <version>1.19.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-spring</artifactId>
+                        <version>5.22.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-migrate-java</artifactId>
+                        <version>2.28.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-logging-frameworks</artifactId>
+                        <version>2.15.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-java-security</artifactId>
+                        <version>2.14.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-testing-frameworks</artifactId>
+                        <version>2.21.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
 
     <profiles>
         <profile>
-            <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <dependencies>
-                <!-- Exclude development dependencies from production -->
                 <dependency>
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-core</artifactId>
@@ -138,6 +198,7 @@
                         </exclusion>
                     </exclusions>
                 </dependency>
+
             </dependencies>
             <build>
                 <plugins>
@@ -147,61 +208,18 @@
                         <version>${vaadin.version}</version>
                         <executions>
                             <execution>
+                                <id>frontend</id>
+                                <phase>compile</phase>
                                 <goals>
+                                    <goal>prepare-frontend</goal>
                                     <goal>build-frontend</goal>
                                 </goals>
-                                <phase>compile</phase>
                             </execution>
                         </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>it</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-spring-boot</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-spring-boot</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Runs the integration tests (*IT) after the server is started -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <trimStackTrace>false</trimStackTrace>
-                            <enableAssertions>true</enableAssertions>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
 </project>
